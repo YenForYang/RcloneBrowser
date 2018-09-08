@@ -7,7 +7,9 @@ clone_depth: 1
 build_script:
   - mkdir build
   - cd build
-  - cmake -G "Visual Studio 12 Win64" -DCMAKE_PREFIX_PATH=C:\Qt\5.8\msvc2013_64 ..
-  - cmake --build .
+  - cmake -G "Visual Studio 12 Win64" -DCMAKE_CONFIGURATION_TYPES="Release" -DCMAKE_PREFIX_PATH=C:\Qt\5.8\msvc2013_64 ..
+  - cmake --build . --config Release
+artifacts:
+- path: build
 test: off
 deploy: off
