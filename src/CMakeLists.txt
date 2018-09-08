@@ -1,12 +1,30 @@
+cmake_minimum_required(VERSION 3.1.0)
+
 if(WIN32)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /WX /wd4100 /wd4189")
+  # In order for find_package to be successful, Qt 5 must be found below the CMAKE_PREFIX_PATH,
+  # or the Qt5<Module>_DIR must be set in the CMake cache to the location of the Qt5WidgetsConfig.cmake file.
+  # The easiest way to use CMake is to set the CMAKE_PREFIX_PATH environment variable to the install prefix of Qt 5.
 else()
   add_definitions("-pedantic -Wall -Wextra -Werror -std=c++11")
 endif()
 
 project(rclone-browser)
 
+# Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# Instruct CMake to run moc automatically when needed
+set(CMAKE_AUTOMOC ON)
+# Create code from a list of Qt designer ui files
+set(CMAKE_AUTOUIC ON)
+
+# Find the QtWidgets library
+find_package(Qt5Widgets CONFIG REQUIRED)
+
+# Find the QtWidgets library
+find_package(Qt5WinExtras CONFIG REQUIRED)
+
+find_package(Qt5Core)
 
 set(UI
   main_window.ui
@@ -66,6 +84,10 @@ endif()
 set(QRC resources.qrc)
 
 add_definitions(-DRCLONE_BROWSER_VERSION="${RCLONE_BROWSER_VERSION}")
+
+
+
+
 
 qt5_wrap_ui(UI_OUT ${UI})
 qt5_wrap_cpp(MOC_OUT ${MOC})
